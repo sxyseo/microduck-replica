@@ -44,24 +44,69 @@ This repository is what falls out of reading both.
 
 A WeChat group for people working on the same thing — build progress, pitfalls, sourcing.
 
+**Group 1 is full (200 members — WeChat's cap for QR joins).** The code below is for **group 2**.
+
 <div align="center">
   <img src="assets/wechat-group.png" alt="Microduck replica WeChat group" width="280">
   <br>
-  <sub><b>This QR code expires on 2026-09-10</b> — WeChat group codes are valid for 7 days<br>
+  <sub><b>Duck Replica Group 2 · expires 2026-09-11</b> — WeChat group codes are valid for 7 days<br>
   If it has expired, open an <a href="https://github.com/fanhao375/microduck-replica/issues">issue</a> and I will post a fresh one</sub>
 </div>
 
-## 🔨 Build Progress
+## Latest
+
+<table>
+<tr>
+<td width="50%" valign="top">
+
+### 🔌 Electronics · `imu_to_dxl` schematic
+
+<a href="hardware/imu_to_dxl/"><img src="assets/hw/imu_to_dxl-原理图.png" alt="imu_to_dxl schematic"></a>
+
+The one board Pollen **did not** open-source — a third-party reconstruction, now drawn.
+STM32G031F8P6 + LSM6DSV16X + half-duplex buffer, sitting on the servo bus as the **16th device**.
+
+Connectivity has been checked net-by-net (no floating pins, no shorts), but it has
+**never been fabricated or validated on hardware**. Two pull-ups (DE and DXL_DATA)
+were added after community review.
+
+**[Design notes &amp; review points](hardware/imu_to_dxl/)**　·　
+[PDF](hardware/imu_to_dxl/imu_to_dxl-原理图.pdf)　·　
+[Netlist](hardware/imu_to_dxl/imu_to_dxl-接线表.md)　·　
+[EasyEDA project](hardware/imu_to_dxl/imu_to_dxl.eprj2)
+
+</td>
+<td width="50%" valign="top">
+
+### 🔨 Mechanical · first printed parts
+
+<a href="BUILD-LOG.en.md"><img src="build-log/photos/2026-09-02-首批打印件.jpg" alt="First printed parts"></a>
 
 **Someone is actually building this.** The head shell, trunk shell, leg structure and feet
 are printed, and **the M2 screws go into the leg parts** — the conclusion in
 [Fastener Reconstruction](docs/fastener-reconstruction.en.md) holds on physical hardware.
 
-![First printed parts](build-log/photos/2026-09-02-首批打印件.jpg)
-
 The rest of this repository is **analysis on paper**, recovered from the public MJCF and
-source. The [Build Log](BUILD-LOG.en.md) records the hands-on side — print settings,
-assembly problems, and whether the derived numbers hold up on real parts.
+source. The build log records the hands-on side: print settings, assembly problems,
+and whether the derived numbers hold up on real parts.
+
+**[Build Log](BUILD-LOG.en.md)**　·　
+[Printable parts](print/)　·　
+[Exploded views](assembly-drawings/)
+
+</td>
+</tr>
+</table>
+
+> **Schematic review wanted** — feedback especially welcome on: the half-duplex buffer
+> enable logic (`2OE` tied high, so the MCU hears its own echo, vs. also driven by DE,
+> which lets RX float while transmitting); copper width for the J1/J2 pass-through;
+> and running 1 Mbps off HSI16 with no crystal (TSSOP-20 does not bring out `OSC_OUT`).
+> Please open an [issue](https://github.com/fanhao375/microduck-replica/issues) if you spot something.
+
+---
+
+## 🔨 Build Progress
 
 > This repository states repeatedly that simulation STLs are not manufacturing files.
 > **The build log is the test of that claim.** The result gets recorded either way.
@@ -130,7 +175,7 @@ Every individual STL, split into print-these and buy-these, bilingual filenames 
 
 | Directory | Count |
 |---|---|
-| [`print/打印件/`](print/打印件/) | **37** structural parts |
+| [`print/打印件/`](print/打印件/) | **30 types / 41 pieces** of structural parts |
 | [`print/标准件-无需打印/`](print/标准件-无需打印/) | **9** bought-part models (for fit checking) |
 
 > Upstream's 7 test-bench fixtures and 1 duplicate are excluded. Printing notes:
@@ -153,6 +198,19 @@ browser and drop an STL in.
 ---
 
 ## Electronics, Reverse-Engineered from the Runtime
+
+<div align="center">
+  <img src="assets/hw/01-物理布局.png" alt="Microduck electronics overview: where each board sits" width="880">
+  <br>
+  <sub><b>Physical layout of the five modules.</b> Dashed grey = physical region, solid = module,
+  dashed red = mounted <b>outside</b> the shell.<br>
+  <b>Orange</b> is the servo bus (top-down), <b>red</b> is battery power (bottom-up).<br>
+  The one thing people get wrong: <b>the compute board, the HAT and the camera are all in the head</b> —
+  the camera sits ~13 mm from the board centre with no joint between them,<br>
+  so the MIPI ribbon never crosses the neck. What does cross it is the servo bus and the power line.<br>
+  <a href="docs/硬件入门.md">Full diagram set (Chinese) →</a>　·　<a href="assets/hw/Microduck硬件图集.pdf">Download PDF (7 diagrams, A3)</a></sub>
+</div>
+
 
 **One 1 Mbps TTL serial bus does everything.**
 
@@ -258,6 +316,9 @@ what it is good for.
 | Document | Contents |
 |---|---|
 | [**Hardware Spec Sheet**](docs/硬件规格速查.md) | One-page reference — block diagram, part numbers, bus parameters, build list, pitfalls |
+| [**Hardware Primer**](docs/硬件入门.md) | **Board by board** — what each of the five modules does, how one 20 ms control tick flows, what changes on the Feetech route, and a closing section on **five checks to run before you replicate** |
+| [**Electronics Sourcing (CN)**](docs/电控采购清单.md) | Taobao links with verified availability — main board, camera, ToF, power, both PCBs, cabling and the debug adapter |
+| [**Mechanical Sourcing (CN)**](docs/机械采购清单.md) | Bearings, M2 fasteners, heat-set inserts and the insertion tip, thread locker, filament |
 | [**Hardware Teardown**](docs/hardware-teardown.en.md) 🇬🇧 | **Full derivation with evidence citations — the main board, both custom boards, bus protocol, sensors, power** |
 | [**Actuator Selection**](docs/actuator-selection.en.md) 🇬🇧 | XL330 parameters, BAM M6 config, five calibrated PD sets, backlash modeling — plus **why closed-loop steppers do not work here, what swapping to a Feetech STS3215 actually costs** (737 g vs 2107 g, measured), and a **cross-comparison of same-class servos** including a deep assessment of the Unitree S288 |
 | [**Fastener Reconstruction**](docs/fastener-reconstruction.en.md) 🇬🇧 | Hole-feature scan across 47 STLs → M2 system and purchase quantities |

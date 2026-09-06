@@ -28,23 +28,67 @@ MJCF 里包含了完整的运动学树：每个零件挂在谁身上、相对位
 
 有人在做同样的事，凑了个微信群一起讨论复刻进度、踩过的坑、元件采购。
 
+**一群已满 200 人**（微信满 200 后无法扫码进），下面是**二群**的码。
+
 <div align="center">
   <img src="assets/wechat-group.png" alt="鸭子复刻 微信群" width="280">
   <br>
-  <sub><b>二维码有效期到 2026-09-10</b>（微信群码 7 天自动失效）<br>
+  <sub><b>鸭子复刻群 2 · 二维码有效期到 2026-09-11</b>（微信群码 7 天自动失效）<br>
   过期了请开个 <a href="https://github.com/fanhao375/microduck-replica/issues">issue</a> 说一声，我会换上新的</sub>
 </div>
 
-## 🔨 实物进度
+## 最近更新
+
+<table>
+<tr>
+<td width="50%" valign="top">
+
+### 🔌 电气 · `imu_to_dxl` 原理图
+
+<a href="hardware/imu_to_dxl/"><img src="assets/hw/imu_to_dxl-原理图.png" alt="imu_to_dxl 原理图"></a>
+
+官方唯一**没有开源**的那块板，第三方复刻版画完了。
+STM32G031F8P6 + LSM6DSV16X + 半双工缓冲，作为**第 16 个设备**挂在舵机总线上。
+
+连通性已逐网络核对（无悬空脚、无短路），**但没打样、没有实物验证**。
+已按社区评审补了 DE 与 DXL_DATA 两处上拉。
+
+**[设计说明与评审要点](hardware/imu_to_dxl/)**　·　
+[PDF](hardware/imu_to_dxl/imu_to_dxl-原理图.pdf)　·　
+[接线表](hardware/imu_to_dxl/imu_to_dxl-接线表.md)　·　
+[嘉立创工程](hardware/imu_to_dxl/imu_to_dxl.eprj2)
+
+</td>
+<td width="50%" valign="top">
+
+### 🔨 机械 · 首批打印件
+
+<a href="构建日志.md"><img src="build-log/photos/2026-09-02-首批打印件.jpg" alt="首批打印件"></a>
 
 **有人正在把它真的做出来。** 头壳、躯干壳、腿部结构件和脚已经打印出来，
-**腿部件上的 M2 螺丝已经装进去了** —— [紧固件反推](docs/紧固件反推.md) 的结论在实物上成立。
+**腿部件上的 M2 螺丝已经装进去了** —— [紧固件反推](docs/紧固件反推.md)
+的结论在实物上成立。
 
-![首批打印件](build-log/photos/2026-09-02-首批打印件.jpg)
-
-本仓库其余部分都是从公开 MJCF 与源码反推的**纸上分析**；
-[构建日志](构建日志.md) 记录的是**动手做的过程** —— 打印参数、装配问题、
+仓库其余部分都是从 MJCF 与源码反推的**纸上分析**，
+构建日志记录的是**动手做的过程**：打印参数、装配问题，
 以及那些反推数据在实物上到底对不对。
+
+**[构建日志](构建日志.md)**　·　
+[打印件清单](print/)　·　
+[装配爆炸图](assembly-drawings/)
+
+</td>
+</tr>
+</table>
+
+> **原理图求评审** —— 特别想听这几处的意见：半双工缓冲的使能逻辑（`2OE` 接常高、
+> 发送时有回显 vs 也接 DE、发送时 RX 悬空）；J1/J2 直通的铜皮宽度；
+> 不上晶振（TSSOP-20 没引出 `OSC_OUT`，HSI16 跑 1 Mbps 余量够不够）。
+> 发现问题请开 [issue](https://github.com/fanhao375/microduck-replica/issues)，或者在上面的群里说。
+
+---
+
+## 🔨 实物进度
 
 > 本仓库反复强调「仿真 STL 不是可打印工程件」。**构建日志就是在验证这句话。**
 > 结论会如实记录，无论正反。
@@ -109,10 +153,10 @@ MJCF 里包含了完整的运动学树：每个零件挂在谁身上、相对位
 
 | 目录 | 数量 |
 |---|---|
-| [`print/打印件/`](print/打印件/) | **37 个**结构件 |
+| [`print/打印件/`](print/打印件/) | **30 种 / 41 件**结构件 |
 | [`print/标准件-无需打印/`](print/标准件-无需打印/) | **9 个**外购件模型（对位用） |
 
-> 已排除上游的 7 个台架测试夹具和 1 个重复件。打印建议见 [`print/README.md`](print/README.md)。
+> 上游的 XL330 台架测试夹具在另一个目录，本来就不属于机器人。打印建议与数量表见 [`print/README.md`](print/README.md)，采购见 [机械采购清单](docs/机械采购清单.md)。
 
 ## CAD 装配体
 
@@ -129,6 +173,17 @@ MJCF 里包含了完整的运动学树：每个零件挂在谁身上、相对位
 
 ## 从运行时反推出的电控方案
 
+<div align="center">
+  <img src="assets/hw/01-物理布局.png" alt="Microduck 电控总览：板子都装在哪" width="880">
+  <br>
+  <sub><b>五个模块的物理布局</b> —— 灰色虚线框是物理区域，实线框是模块，红色虚线框表示装在壳体<b>外面</b>。<br>
+  <b>橙色</b>是舵机总线（自上而下），<b>红色</b>是电池供电（自下而上）。<br>
+  最容易搞错的一条：<b>主控、HAT、摄像头三者都在头里</b>，摄像头距主控板中心约 13 mm 且中间没有关节 ——<br>
+  所以 MIPI 排线不穿过脖子，真正过颈的是舵机总线和供电线。<br>
+  <a href="docs/硬件入门.md">完整图集与讲解 →</a>　·　<a href="assets/hw/Microduck硬件图集.pdf">下载 PDF 图集（7 张，A3）</a></sub>
+</div>
+
+
 **一条 1 Mbps 的 TTL 串行总线搞定一切。**
 
 ```
@@ -136,7 +191,7 @@ MJCF 里包含了完整的运动学树：每个零件挂在谁身上、相对位
                   ├── UART2  1 Mbps TTL 单线半双工 ── 15× XL330 + imu_to_dxl (ID 200)
                   ├── I2C3   400 kHz (pin 3/5) ────── AIC3104@0x18 · ToF@0x29 · BMI088（未用）
                   ├── I2S3   12.288 MHz ───────────── 音频
-                  ├── MIPI CSI ────────────────────── IMX219（I2C@0x10，倒装）
+                  ├── MIPI CSI ────────────────────── IMX219（I2C@0x10，转 90°）
                   ├── 蓝牙 ────────────────────────── 手柄 / 手机 App
                   ├── Wi-Fi ───────────────────────── WebRTC
                   └── USB-C ───────────────────────── 供电 + maskrom
@@ -145,7 +200,7 @@ MJCF 里包含了完整的运动学树：每个零件挂在谁身上、相对位
 | | |
 |---|---|
 | **主控** | **Radxa Zero 3W** —— 市售模块，**不是定制载板** |
-| SoC | RK3566，四核 Cortex-A55，Mali-G52，0.8 TOPS NPU，1 GB RAM / 32 GB eMMC |
+| SoC | RK3566，四核 Cortex-A55，Mali-G52，0.8 TOPS NPU。官方公布 1 GB / 32 GB eMMC；复刻建议 2G/16G，见 [电控采购清单](docs/电控采购清单.md) |
 | **舵机总线** | **单线半双工 TTL** —— **不是** RS-232，**也不是** RS-485。Dynamixel Protocol V2 @ 1 Mbps，走 `/dev/ttyS2` |
 | **自制板 1** | **`imu_to_dxl` v2** —— 一颗会说 Dynamixel 的 LSM6DSV16X：总线 ID 200、寄存器 124，12 字节块在**同一次** `sync_read` 里和舵机一起读回 |
 | **自制板 2** | **RPI Robot HAT** —— TLV320AIC3104 @ 0x18、一颗休眠的 BMI088、接 ToF 的 Stemma 座。**官方已开源**（[`elec_RPI_Robot_HAT`](https://github.com/pollen-robotics/elec_RPI_Robot_HAT)） |
@@ -198,7 +253,7 @@ MJCF 里包含了完整的运动学树：每个零件挂在谁身上、相对位
 | 舵机 | XL330 × 15，市售件照买 |
 | 主控 | **Radxa Zero 3W**，市售模块，与官方同款 |
 | IMU 板 | 自己画 `imu_to_dxl`：LSM6DSV16X + MCU + 半双工收发器，协议已还原 |
-| HAT 板 | **官方 Gerber 直接打样**（4 层板）；不要录音的话也可整块省略 |
+| HAT 板 | **官方 Gerber 直接打样**（4 层板）。不要录音可整块省略，但**半双工方向电路要另配转接板**，见 [电控采购清单](docs/电控采购清单.md#六两块-pcb) |
 | 软件 | 主控同款则官方 Rust 运行时可直接跑（Apache-2.0） |
 | 策略 | 官方 9 个 ONNX 可用；改硬件后用 [microduck_rl](https://github.com/pollen-robotics/microduck_rl) 重训 |
 
