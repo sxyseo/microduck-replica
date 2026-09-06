@@ -1,0 +1,53 @@
+[mdp] Patches 1-2 active: NaN-safe reward/advantage
+[mdp] Patch 4 active: ONNX export filters passive_* joints
++---------------------------------------------------------+
+|             Available Environments in mjlab             |
++----+----------------------------------------------------+
+| #  | Task ID                                            |
++----+----------------------------------------------------+
+| 1  | Mjlab-BallKick-Flat-Backlash-MicroDuck             |
+| 2  | Mjlab-BallKick-Flat-MicroDuck                      |
+| 3  | Mjlab-Cartpole-Balance                             |
+| 4  | Mjlab-Cartpole-Swingup                             |
+| 5  | Mjlab-GroundPick-Flat-Backlash-MicroDuck           |
+| 6  | Mjlab-GroundPick-Flat-MicroDuck                    |
+| 7  | Mjlab-GroundPick-Rough-Backlash-MicroDuck          |
+| 8  | Mjlab-GroundPick-Rough-MicroDuck                   |
+| 9  | Mjlab-Lift-Cube-Yam                                |
+| 10 | Mjlab-Lift-Cube-Yam-Depth                          |
+| 11 | Mjlab-Lift-Cube-Yam-Rgb                            |
+| 12 | Mjlab-Multi-Cube-Seg-Yam                           |
+| 13 | Mjlab-RollerCrouch-Flat-Backlash-MicroDuck         |
+| 14 | Mjlab-RollerCrouch-Flat-MicroDuck                  |
+| 15 | Mjlab-RollerSlope-Flat-Backlash-MicroDuck          |
+| 16 | Mjlab-RollerSlope-Flat-MicroDuck                   |
+| 17 | Mjlab-RollerStandUp-Flat-MicroDuck                 |
+| 18 | Mjlab-Roulade-Flat-MicroDuck                       |
+| 19 | Mjlab-SitStand-Flat-Backlash-MicroDuck             |
+| 20 | Mjlab-SitStand-Flat-MicroDuck                      |
+| 21 | Mjlab-SitStand-Rough-Backlash-MicroDuck            |
+| 22 | Mjlab-SitStand-Rough-MicroDuck                     |
+| 23 | Mjlab-Spin-Flat-MicroDuck                          |
+| 24 | Mjlab-StandUp-Flat-Backlash-MicroDuck              |
+| 25 | Mjlab-StandUp-Flat-MicroDuck                       |
+| 26 | Mjlab-StandUp-Rough-Backlash-MicroDuck             |
+| 27 | Mjlab-StandUp-Rough-MicroDuck                      |
+| 28 | Mjlab-Tracking-Flat-Unitree-G1                     |
+| 29 | Mjlab-Tracking-Flat-Unitree-G1-No-State-Estimation |
+| 30 | Mjlab-VelStand-Flat-Backlash-MicroDuck             |
+| 31 | Mjlab-VelStand-Flat-MicroDuck                      |
+| 32 | Mjlab-VelStand-Rough-Backlash-MicroDuck            |
+| 33 | Mjlab-VelStand-Rough-MicroDuck                     |
+| 34 | Mjlab-Velocity-Flat-Backlash-MicroDuck             |
+| 35 | Mjlab-Velocity-Flat-Backlash-MicroDuck-Rollers     |
+| 36 | Mjlab-Velocity-Flat-MicroDuck                      |
+| 37 | Mjlab-Velocity-Flat-MicroDuck-Rollers              |
+| 38 | Mjlab-Velocity-Flat-Unitree-G1                     |
+| 39 | Mjlab-Velocity-Flat-Unitree-Go1                    |
+| 40 | Mjlab-Velocity-Rough-Backlash-MicroDuck            |
+| 41 | Mjlab-Velocity-Rough-MicroDuck                     |
+| 42 | Mjlab-Velocity-Rough-Unitree-G1                    |
+| 43 | Mjlab-Velocity-Rough-Unitree-Go1                   |
+| 44 | Mjlab-Velocity-Swizzle-Backlash-MicroDuck          |
+| 45 | Mjlab-Velocity-Swizzle-MicroDuck                   |
++----+----------------------------------------------------+

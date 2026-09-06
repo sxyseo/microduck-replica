@@ -1,0 +1,15 @@
+L25   TURN_IN_PLACE_FRACTION                     = 0.15   
+L28   ENABLE_SYMMETRY                            = False  
+L31   ENABLE_COM_RANDOMIZATION                   = True   
+L32   ENABLE_HEAD_COM_RANDOMIZATION              = True   # Randomize CoM of the head assembly bodies
+L33   ENABLE_KP_RANDOMIZATION                    = False  # Was True
+L34   ENABLE_KD_RANDOMIZATION                    = False  # Was True
+L35   ENABLE_MASS_INERTIA_RANDOMIZATION          = True   # Can enable once walking is stable
+L36   ENABLE_JOINT_FRICTION_RANDOMIZATION        = True   # Scales BAM's friction budget per-env via FrictionDRBamActuator.friction_scale
+L37   ENABLE_JOINT_DAMPING_RANDOMIZATION         = False  
+L38   ENABLE_ARMATURE_RANDOMIZATION              = True   # Reflected rotor inertia (microban-style). DOES affect BAM (armature is set, not zeroed).
+L39   ENABLE_VELOCITY_PUSHES                     = True   # Velocity-based pushes for robustness training
+L40   ENABLE_IMU_ORIENTATION_RANDOMIZATION       = True   # Simulates mounting errors
+L41   ENABLE_ENCODER_BIAS                        = True   # Per-env joint encoder calibration offset (actor obs sees joint_pos + bias)
+L42   ENABLE_BASE_ORIENTATION_RANDOMIZATION      = False  # Randomize initial tilt to force reactive behavior
+L53   USE_PROJECTED_GRAVITY                      = True   # If True, use projected gravity instead of raw accelerometer
