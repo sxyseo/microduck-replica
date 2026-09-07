@@ -44,12 +44,12 @@ This repository is what falls out of reading both.
 
 A WeChat group for people working on the same thing — build progress, pitfalls, sourcing.
 
-**Group 1 is full (200 members — WeChat's cap for QR joins).** The code below is for **group 2**.
+**Groups 1 and 2 are full (200 members each — WeChat's cap for QR joins).** The code below is for **group 3**.
 
 <div align="center">
   <img src="assets/wechat-group.png" alt="Microduck replica WeChat group" width="280">
   <br>
-  <sub><b>Duck Replica Group 2 · expires 2026-09-11</b> — WeChat group codes are valid for 7 days<br>
+  <sub><b>Duck Replica Group 3 · expires 2026-09-14</b> — WeChat group codes are valid for 7 days<br>
   If it has expired, open an <a href="https://github.com/fanhao375/microduck-replica/issues">issue</a> and I will post a fresh one</sub>
 </div>
 
@@ -59,19 +59,22 @@ A WeChat group for people working on the same thing — build progress, pitfalls
 <tr>
 <td width="50%" valign="top">
 
-### 🔌 Electronics · `imu_to_dxl` schematic
+### 🔌 Electronics · `imu_to_dxl` PCB is done
 
-<a href="hardware/imu_to_dxl/"><img src="assets/hw/imu_to_dxl-原理图.png" alt="imu_to_dxl schematic"></a>
+<a href="hardware/imu_to_dxl/"><img src="assets/hw/imu_to_dxl-PCB.png" alt="imu_to_dxl PCB top assembly"></a>
 
-The one board Pollen **did not** open-source — a third-party reconstruction, now drawn.
-STM32G031F8P6 + LSM6DSV16X + half-duplex buffer, sitting on the servo bus as the **16th device**.
+The one board Pollen **did not** open-source — a third-party reconstruction, taken all
+the way from schematic to PCB. STM32G031F8P6 + LSM6DSV16X + half-duplex buffer, sitting
+on the servo bus as the **16th device**.
 
-Connectivity has been checked net-by-net (no floating pins, no shorts), but it has
-**never been fabricated or validated on hardware**. Two pull-ups (DE and DXL_DATA)
-were added after community review.
+**45 × 22 mm, 2 layers**, R2 rounded corners, two diagonal M2 holes, solid GND plane on
+the bottom. All 23 nets connected, **DRC clean**, every IC power pin has a 100nF within
+2.3 mm. Still **never fabricated or validated on hardware**.
 
-**[Design notes &amp; review points](hardware/imu_to_dxl/)**　·　
-[PDF](hardware/imu_to_dxl/imu_to_dxl-原理图.pdf)　·　
+**[Design notes · review points · audit](hardware/imu_to_dxl/)**　·　
+[Schematic PDF](hardware/imu_to_dxl/imu_to_dxl-原理图.pdf)　·　
+[PCB PDF](hardware/imu_to_dxl/imu_to_dxl-PCB.pdf)　·　
+[3D STEP](hardware/imu_to_dxl/imu_to_dxl-PCB.step)　·　
 [Netlist](hardware/imu_to_dxl/imu_to_dxl-接线表.md)　·　
 [EasyEDA project](hardware/imu_to_dxl/imu_to_dxl.eprj2)
 
