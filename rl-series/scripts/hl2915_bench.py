@@ -465,7 +465,7 @@ def record_phase(bus, sid, writer, rows, phase, target, seconds):
     if phase != "pre":
         # 与协议手册例 4 同构：42 起连写 位置(2B)+时间(2B=0)+速度(2B=0 全速)。
         # 阶跃要"陡"，速度写 0（不限速），加速度由 41 号决定，越陡越接近真阶跃。
-        bus.write(sid, REG_GOAL, [target & 0xFF, target >> 8, 0, 0, 0, 0])
+        bus.write(sid, REG_GOAL, [target & 0xFF, target >> 8, 0, 0, 44, 1])  # 速度 300 步/s:该固件速度=0 时零速不动(实测),勿改回 0
     t0 = time.monotonic()
     miss = 0
     while time.monotonic() - t0 < seconds:
@@ -541,6 +541,8 @@ def lesson6(bus, sid, args):
         sys.exit("--steps（阶跃幅度）要 > 0")
     print(f"当前增益 P={kp0} D={kd0} I={ki0}，扭矩限制={tl0}；本次用 P={kp} D={kd}")
 
+    # 上电默认速度寄存器(46)=0,固件解释为"零速趋向目标"=纹丝不动——阶跃前必须写速度
+    bus.write(sid, REG_SPEED, [300 & 0xFF, (300 >> 8) & 0xFF])
     up, back = clamp_to_stroke(bus, sid, [start + args.steps, start])
     if up <= start + 10:
         sys.exit(f"起始 {start} 离行程上限太近，正方向阶不出 {args.steps} 步——"
