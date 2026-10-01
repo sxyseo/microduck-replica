@@ -221,7 +221,7 @@ def lesson1(bus, sid):
     if rx is None:
         sys.exit(f"ID {sid} 无应答：查线序(1=GND 2=Vcc 3=Signal)、电压(要 9-14V)、"
                  f"波特率(默认 1Mbps)。只有一只舵机时也可以试广播：--id 254")
-    print(f"✔ PING 成功，ERROR=0x{rx[0]:02X} {status_text(rx[0])}")
+    print("✔ PING 成功（状态字 0x00 = 无错误；应答帧内含状态字节，见内存表）")
 
     snap = bus.read(sid, 0, 17)
     if snap:
