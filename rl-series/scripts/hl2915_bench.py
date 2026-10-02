@@ -465,7 +465,7 @@ def record_phase(bus, sid, writer, rows, phase, target, seconds):
     if phase != "pre":
         # 与协议手册例 4 同构：42 起连写 位置(2B)+时间(2B=0)+速度(2B=0 全速)。
         # 阶跃要"陡"，速度写 0（不限速），加速度由 41 号决定，越陡越接近真阶跃。
-        bus.write(sid, REG_GOAL, [target & 0xFF, target >> 8, 0, 0, 44, 1])  # 速度 300 步/s:该固件速度=0 时零速不动(实测),勿改回 0
+        bus.write(sid, REG_GOAL, [target & 0xFF, target >> 8])  # 仅写位置 2B:实测 v3.45 固件对 44/45(时间)写入 0 会导致指令无效(勿加时间/速度字段,速度用 46 号单独写)
     t0 = time.monotonic()
     miss = 0
     while time.monotonic() - t0 < seconds:
