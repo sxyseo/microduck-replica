@@ -22,12 +22,11 @@
 1. 插 SD 卡（≥16GB，A1/A2 级），`diskutil list` 认准**外置 physical** 磁盘号——别烧错盘。
 2. 烧录（二选一）：
    - **图形**：Raspberry Pi Imager，直接选 `.img.xz`（自动解压校验）；
-   - **命令行**：
+   - **命令行**（本地文件名即下表「本地路径」；官方原始名 `Armbian_26.8.1_Radxa-zero3_trixie_vendor_6.1.115_minimal.img.xz`，sha 文件以官方名为键）：
      ```bash
      diskutil unmountDisk diskN
-     xz -dk Armbian_26.8.1_Radxa-zero3_trixie_vendor_6.1.115_minimal.img.xz
-     sudo dd if=Armbian_26.8.1_Radxa-zero3_trixie_vendor_6.1.115_minimal.img \
-             of=/dev/rdiskN bs=4m oflag=sync
+     xz -dk Armbian-radxa-zero3-trixie-minimal.img.xz
+     sudo dd if=Armbian-radxa-zero3-trixie-minimal.img of=/dev/rdiskN bs=4m oflag=sync
      diskutil eject diskN
      ```
 3. 不需要接串口调试线：刷完靠 ssh。
