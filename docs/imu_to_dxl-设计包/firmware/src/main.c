@@ -2,14 +2,35 @@
 //
 // 职责（全部来自已验证的主机侧预期，见 设计规格.md）：
 //   I2C1 400kHz 读 LSM6DSV16X → 填 124 号块（20B）
-//   USART1 1Mbps 半双工 → dxl_slave_feed() → 应答
+//   USART1 1Mbps 半双工 → 协议层 feed() → 应答
 // 目标循环节奏：IMU 采样 ≥200Hz；UART 字节级中断喂协议层。
+//
+// ---- 总线协议选择（双协议设计，见 firmware/README.md）----------------------
+// 上游官方总线（Dynamixel XL330 系）= IMU_PROTO_DXL；
+// 换舵机路线（飞特 HL 系列，总线统一飞特协议）= 编译时 -DIMU_PROTO=1。
+// 两种模式共用同一寄存器契约（ID 200 / 124 号块 12 字节），只换线上帧格式。
+#define IMU_PROTO_DXL      0
+#define IMU_PROTO_FEETECH  1
+#ifndef IMU_PROTO
+#define IMU_PROTO IMU_PROTO_DXL
+#endif
 #include "stm32g0xx_hal.h"
-#include "dxl_slave.h"
 #include "imu_lsm6dsv16x.h"
 
+#if IMU_PROTO == IMU_PROTO_FEETECH
+#include "feetech_slave.h"
+static feetech_slave_t g_slave;
+#define SLAVE_INIT(id, fn)   feetech_slave_init(&(g_slave), (id), (fn))
+#define SLAVE_FEED(b)        feetech_slave_feed(&(g_slave), (b))
+#define SLAVE_IMU_BLOCK      FT_REG_IMU_BLOCK
+#else
+#include "dxl_slave.h"
 static dxl_slave_t g_slave;
 static uint16_t g_crc_table[256];   // dxl_slave 内部表为主；此处仅示意
+#define SLAVE_INIT(id, fn)   dxl_slave_init(&(g_slave), (id), (fn))
+#define SLAVE_FEED(b)        dxl_slave_feed(&(g_slave), (b))
+#define SLAVE_IMU_BLOCK      DXL_REG_IMU_BLOCK
+#endif
 
 // ---- 平台钩子：应答上总线 -------------------------------------------------
 // 半双工方向：若采用 SN74LVC1G126 缓冲方案，先拉高 OE（PA8）再发送，发完拉低。
@@ -23,7 +44,7 @@ static void bus_send(const uint8_t *bytes, uint16_t n) {
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
     static uint8_t b;
     (void)huart;
-    dxl_slave_feed(&g_slave, b);
+    SLAVE_FEED(b);
     // TODO(HAL): HAL_UART_Receive_IT(&huart1, &b, 1);  // 重新挂接收中断
 }
 
@@ -33,7 +54,7 @@ int main(void) {
     //            MX_USART1_UART_Init();                 // 1_000_000 8N1，TX=PA9 RX=PA10
     //            HAL_UART_Receive_IT(&huart1, &rx_byte, 1);
 
-    dxl_slave_init(&g_slave, 200, bus_send);           // ID 200 = model.rs L78
+    SLAVE_INIT(200, bus_send);                         // ID 200 = model.rs L78
 
     if (!lsm_init()) {
         // WHO_AM_I 不符：慢闪 LED 报错，且 124 块全零（主机端会拒绝异常四元数）
@@ -45,7 +66,7 @@ int main(void) {
         uint32_t now = HAL_GetTick();
         if ((int32_t)(now - next_sample) >= 0) {       // 5ms → 200Hz
             next_sample = now + 5;
-            lsm_sample_into(&g_slave.reg[DXL_REG_IMU_BLOCK]);
+            lsm_sample_into(&g_slave.reg[SLAVE_IMU_BLOCK]);
         }
     }
 }
