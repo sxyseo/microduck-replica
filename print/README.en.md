@@ -9,6 +9,8 @@ Every STL for the whole robot, split into **print these** and **buy these**, wit
 | [`打印件/`](打印件/) (print) | **37** | Structural parts you print yourself |
 | [`标准件-无需打印/`](标准件-无需打印/) (do not print) | **9** | Models of bought parts — servos, bearings, battery, PCBs. **For fit and interference checking only** |
 
+Optional cosmetic accessory: [`配件-刘海/`](配件-刘海/) contains a full 3D centre-part hairstyle cap and a first-fit STL; it is not part of the standard robot print count.
+
 > These are **individual parts**, for printing.
 > For **assembly relationships** see [`../cad/`](../cad/) — 16 sub-assemblies merged along the kinematic tree.
 
